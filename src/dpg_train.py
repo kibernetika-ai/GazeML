@@ -4,6 +4,7 @@ import argparse
 
 import coloredlogs
 import tensorflow as tf
+import os
 
 if __name__ == '__main__':
 
@@ -11,6 +12,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Train the Deep Pictorial Gaze model.')
     parser.add_argument('-v', type=str, help='logging level', default='info',
                         choices=['debug', 'info', 'warning', 'error', 'critical'])
+    parser.add_argument('--data', type=str, help='Data', default='./data')
     args = parser.parse_args()
     coloredlogs.install(
         datefmt='%d/%m %H:%M',
@@ -57,7 +59,7 @@ if __name__ == '__main__':
                         data_format='NCHW',
                         batch_size=batch_size,
                         keys_to_use=['train/' + s for s in other_person_ids],
-                        hdf_path='../datasets/MPIIGaze.h5',
+                        hdf_path=os.path.join(args.data,'MPIIGaze.h5'),
                         eye_image_shape=(90, 150),
                         testing=False,
                         min_after_dequeue=30000,
@@ -71,7 +73,7 @@ if __name__ == '__main__':
                         data_format='NCHW',
                         batch_size=batch_size,
                         keys_to_use=['test/' + person_id],
-                        hdf_path='../datasets/MPIIGaze.h5',
+                        hdf_path=os.path.join(args.data,'MPIIGaze.h5'),
                         eye_image_shape=(90, 150),
                         testing=True,
                     ),

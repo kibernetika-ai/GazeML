@@ -127,6 +127,8 @@ class BaseModel(object):
 
     @property
     def output_path(self):
+        if os.environ.get('BUILD_ID',None) is not None:
+            return os.environ.get('TRAINING_DIR', 'training') + '/' + os.environ.get('BUILD_ID', '1'),
         """Path to store logs and model weights into."""
         return '%s/%s' % (os.path.abspath(os.path.dirname(__file__) + '/../../outputs'),
                           self.identifier)
